@@ -40,17 +40,10 @@ await goods.fetch()
 onMounted(() => {
   const socket = new WebSocket('ws://localhost:3001')
   socket.onmessage = ({ data: rateValue }) => {
+    lessCost.value = exchangeDifference.value > rateValue
     exchangeDifference.update(+rateValue)
-  }
-
-  exchangeDifference.$subscribe(({ events: { newValue, oldValue } }) => {
-    if (!newValue) {
-      return
-    }
-
     goods.changeCost()
-    lessCost.value = oldValue > newValue
-  })
+  }
 })
 </script>
 
